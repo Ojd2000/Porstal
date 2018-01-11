@@ -20,7 +20,7 @@ public class CubeController : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (Input.GetKey(KeyCode.E) && time < Time.time - 1 && other.gameObject == Player)
+        if (Input.GetKey(KeyCode.E) && time < Time.time - 0.5 && other.gameObject == Player)
         {
             time = Time.time;
 
