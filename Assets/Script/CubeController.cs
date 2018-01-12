@@ -4,26 +4,29 @@ using UnityEngine;
 
 public class CubeController : MonoBehaviour
 {
-    public GameObject Player;   // Player who is parent of the cube --- consider make more generic
+    public GameObject player;       // Player who is parent of the cube --- consider make more generic
+    public float timeSpan = .5f;    // Time span between E keys detection
 
-    private float time = -3f;
-    private Vector3 fullSize = Vector3.zero;
+    Vector3 fullSize;       // Cube initial size
+    Vector3 spawn;          // Cube spawn position
+    float time = -.5f;      // Last at-frame-beginning time
 
-    private void Start()
+    void Start()
     {
         fullSize = transform.localScale;
+        spawn = transform.position;
+        time = -timeSpan;
     }
 
-    private void Update()
+    void Update()
     {
     }
 
-    private void OnTriggerStay(Collider other)
+    void OnTriggerStay(Collider other)
     {
-        if (Input.GetKey(KeyCode.E) && time < Time.time - 0.5 && other.gameObject == Player)
+        if (Input.GetKeyDown(KeyCode.E) && other.gameObject.CompareTag("Player") && Time.time - time > timeSpan)
         {
             time = Time.time;
-
             if (transform.parent)
             {
                 transform.parent = null;
@@ -34,13 +37,21 @@ public class CubeController : MonoBehaviour
 
             else
             {
-                transform.parent = Player.transform;
+                transform.parent = player.transform;
                 transform.GetComponent<Rigidbody>().isKinematic = true;
-                transform.rotation = Player.transform.rotation;
-                transform.position = Player.transform.position + transform.up + transform.forward * 2;
+                transform.rotation = player.transform.rotation;
+                transform.position = player.transform.position + transform.up + transform.forward * 2;
 
-                transform.localScale = new Vector3(.25f, .25f, .25f);   // consider using proprortions
+                transform.localScale = new Vector3(fullSize.x / other.transform.localScale.x, fullSize.y / other.transform.localScale.y, fullSize.z / other.transform.localScale.z) / 3;    // scale size (fullsize : localScale : x = 3 : 4 : 0.25)
             }
         }
+    }
+
+    public void Respawn()
+    {
+        transform.position = spawn;
+        transform.parent = null;
+        transform.localScale = fullSize;
+        GetComponent<Rigidbody>().isKinematic = false;
     }
 }

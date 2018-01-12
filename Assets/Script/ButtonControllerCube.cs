@@ -4,30 +4,25 @@ using UnityEngine;
 
 public class ButtonControllerCube : MonoBehaviour
 {
-    public GameObject Plane;    // Plane field with cube above
-    public GameObject Cube;     // Cube to move
-    public GameObject Player;   // Player who presses the button
+    public GameObject plane;    // Plane field with cube above
+    public GameObject cube;     // Cube to move
 
-    private float time = -.5f;  // Position-update delay
-
-    private void Start()
+    void Start()
     {
     }
 
-    private void Update()
+    void Update()
     {
     }
     
-    private void OnTriggerStay(Collider other)
+    void OnTriggerStay(Collider other)
     {
-        if (Input.GetKey(KeyCode.E) && time <= Time.time - 0.5 && other.gameObject == Player)
+        if (Input.GetKeyDown(KeyCode.E) && other.CompareTag("Player"))
         {
-            time = Time.time;
+            for(int i = 0; i < plane.transform.localScale.x; i++)   // consider man-hole instead
+                plane.transform.position += plane.transform.right;
 
-            for(int i = 0; i < Plane.transform.localScale.x; i++)   // consider man-hole instead
-                Plane.transform.position += Plane.transform.right;
-
-            Cube.GetComponent<Rigidbody>().useGravity = true;
+            cube.GetComponent<Rigidbody>().useGravity = true;
         }
     }
 }

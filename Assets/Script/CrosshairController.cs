@@ -5,18 +5,21 @@ using UnityEngine.UI;
 
 public class CrosshairController : MonoBehaviour
 {
-    // Make public these two??
+    [HideInInspector] public static Color currentColor;
+    [HideInInspector] public static Dictionary<Color, GameObject> portals = new Dictionary<Color, GameObject>();
+    
     private Image image;    // Displayed image
     private Sprite other;   // Alternative sprite
-
-    private void Start()
+    
+    void Start()
     {
+        currentColor = Color.green;
         image = GetComponent<Image>();
         image.sprite = Resources.Load<Sprite>("crosshair-green");
         other = Resources.Load<Sprite>("crosshair-red");
     }
 
-    private void Update()
+    void Update()
     {
         if (Input.GetAxis("Mouse ScrollWheel") != 0)
         {
@@ -24,6 +27,7 @@ public class CrosshairController : MonoBehaviour
             Sprite tmp = image.sprite;
             image.sprite = other;
             other = tmp;
+            currentColor = currentColor == Color.green ? Color.red : Color.green;
         }
     }
 }
