@@ -19,13 +19,7 @@ public class DoorController : MonoBehaviour
         if (other.CompareTag("Cube"))
             other.GetComponent<CubeController>().Respawn();
     }
-
-    void OnTriggerExit(Collider other)  // Does not work
-    {
-        if (other.CompareTag("Player"))
-            Close();
-    }
-
+   
     public void Open()
     {
         if (!isOpen)

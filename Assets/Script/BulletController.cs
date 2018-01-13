@@ -5,10 +5,13 @@ using UnityEngine;
 public class BulletController : MonoBehaviour
 {
     public GameObject portal;   // Portal prefab
+
+    private Color bulletColor;
     
     void Start()
     {
-        GetComponent<Renderer>().material.color = CrosshairController.currentColor;
+        bulletColor = GetComponent<Renderer>().material.color = CrosshairController.currentColor;
+        Debug.Log(bulletColor);
     }
     
     void Update()
@@ -19,13 +22,13 @@ public class BulletController : MonoBehaviour
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("PortalWall"))
         {
-            if (CrosshairController.portals.ContainsKey(CrosshairController.currentColor))
-                Destroy(CrosshairController.portals[CrosshairController.currentColor]);
+            if (CrosshairController.portals.ContainsKey(bulletColor))
+                Destroy(CrosshairController.portals[bulletColor]);
 
-            GameObject p = Instantiate(portal, new Vector3(transform.position.x, transform.position.y, collision.transform.position.z - .5f), collision.gameObject.transform.rotation);
-            p.GetComponent<Renderer>().material.color = CrosshairController.currentColor;
+            var p = Instantiate(portal, new Vector3(transform.position.x, transform.position.y, collision.transform.position.z - .5f), collision.gameObject.transform.rotation);
+            p.GetComponent<Renderer>().material.color = bulletColor;
             p.transform.parent = collision.transform;
-            CrosshairController.portals[CrosshairController.currentColor] = p;
+            CrosshairController.portals[bulletColor] = p;
         }
 
         Destroy(gameObject);

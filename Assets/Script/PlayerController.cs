@@ -5,6 +5,8 @@ using UnityStandardAssets.Characters.FirstPerson;
 
 public class PlayerController : MonoBehaviour
 {
+    [HideInInspector] public Transform checkpoint;
+    [HideInInspector] public bool onMovingObject = false;
     public GameObject bullet;           // Bullet to shoot
     public Camera cam;                  // Player camera
     public float gravity;               // Gravity value
@@ -13,6 +15,8 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed;             // Speed of normal movements
     public float sensitivityX = 2f;     // Sensitivity of mouse horizontal movement effect
     public float sensitivytyY = 2f;     // Sensitivity of mouse vertical movement effect
+    public float bulletSpeed = 50f;
+
 
     // Keywords for key-pressed input
     string getX;
@@ -46,6 +50,9 @@ public class PlayerController : MonoBehaviour
     {
         controller.Move((transform.forward * move.z + transform.right * move.x + transform.up * move.y) * Time.deltaTime);
         controller.transform.Rotate(rotate * Time.deltaTime);
+
+        if (controller.transform.position.y <= -37)
+            Respawn();
     }
 
     void Update()
@@ -59,7 +66,7 @@ public class PlayerController : MonoBehaviour
         //Mouse input throw MouseLook
         mouseLook.LookRotation(transform, cam.transform);
 
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButton("Fire1"))
             Fire();
 
         if (Input.GetButtonDown("Fire2"))
@@ -89,12 +96,13 @@ public class PlayerController : MonoBehaviour
 
         else
             move.y = -gravity;
+
     }
 
     void Fire()
     {
-        GameObject bullet = Instantiate(this.bullet, cam.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2, cam.nearClipPlane + 2)), cam.transform.rotation);
-        bullet.GetComponent<Rigidbody>().velocity = bullet.GetComponent<Rigidbody>().transform.forward * 50;
+        GameObject bullet = Instantiate(this.bullet, cam.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2, cam.nearClipPlane + 3)), cam.transform.rotation);
+        bullet.GetComponent<Rigidbody>().velocity = bullet.GetComponent<Rigidbody>().transform.forward * bulletSpeed;
     }
 
     void Zoom()
@@ -105,5 +113,11 @@ public class PlayerController : MonoBehaviour
     void UnZoom()
     {
         cam.fieldOfView *= 2;
+    }
+
+    public void Respawn()
+    {
+        transform.position = checkpoint.position;
+        transform.rotation = checkpoint.rotation;
     }
 }
