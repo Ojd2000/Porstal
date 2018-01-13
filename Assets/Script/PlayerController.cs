@@ -5,8 +5,8 @@ using UnityStandardAssets.Characters.FirstPerson;
 
 public class PlayerController : MonoBehaviour
 {
-    [HideInInspector] public Transform checkpoint;
-    [HideInInspector] public bool onMovingObject = false;
+    [HideInInspector] public Transform checkpoint;  // Last checkpoint transform
+
     public GameObject bullet;           // Bullet to shoot
     public Camera cam;                  // Player camera
     public float gravity;               // Gravity value
@@ -16,8 +16,7 @@ public class PlayerController : MonoBehaviour
     public float sensitivityX = 2f;     // Sensitivity of mouse horizontal movement effect
     public float sensitivytyY = 2f;     // Sensitivity of mouse vertical movement effect
     public float bulletSpeed = 50f;
-
-
+    
     // Keywords for key-pressed input
     string getX;
     string getY;

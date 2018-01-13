@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class CubeController : MonoBehaviour
 {
-    public GameObject player;       // Player who is parent of the cube --- consider make more generic
     public float timeSpan = .5f;    // Time span between E keys detection
 
     Vector3 fullSize;       // Cube initial size
@@ -18,13 +17,9 @@ public class CubeController : MonoBehaviour
         time = -timeSpan;
     }
 
-    void Update()
-    {
-    }
-
     void OnTriggerStay(Collider other)
     {
-        if (Input.GetKeyDown(KeyCode.E) && other.gameObject.CompareTag("Player") && Time.time - time > timeSpan)
+        if (Input.GetKeyDown(KeyCode.E) && other.CompareTag("Player") && Time.time - time > timeSpan)
         {
             time = Time.time;
             if (transform.parent)
@@ -37,11 +32,10 @@ public class CubeController : MonoBehaviour
 
             else
             {
-                transform.parent = player.transform;
+                transform.parent = other.gameObject.transform;
+                transform.position = other.gameObject.transform.position + transform.up + transform.forward * 2;
+                transform.rotation = other.gameObject.transform.rotation;
                 transform.GetComponent<Rigidbody>().isKinematic = true;
-                transform.rotation = player.transform.rotation;
-                transform.position = player.transform.position + transform.up + transform.forward * 2;
-
                 transform.localScale = new Vector3(fullSize.x / other.transform.localScale.x, fullSize.y / other.transform.localScale.y, fullSize.z / other.transform.localScale.z) / 3;    // scale size (fullsize : localScale : x = 3 : 4 : 0.25)
             }
         }

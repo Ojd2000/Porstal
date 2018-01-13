@@ -8,10 +8,6 @@ public class FootboardController : MonoBehaviour
     public GameObject otherFootboard;   // The other footboard
 
     bool triggered = false;
-
-    void Start()
-    {
-    }
     
     void Update()
     {

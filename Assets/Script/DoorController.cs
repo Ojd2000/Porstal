@@ -6,14 +6,6 @@ public class DoorController : MonoBehaviour
 {
     bool isOpen = false;
     
-    void Start()
-    {
-    }
-    
-    void Update()
-    {
-    }
-
     void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("Cube"))
