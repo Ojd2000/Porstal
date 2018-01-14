@@ -10,7 +10,7 @@ public class PlatformController : MonoBehaviour
     float mostLeft = 2.98f;
     float mostRight = 38.68f;
     
-    private void FixedUpdate()
+    void FixedUpdate()
     {
         if (transform.position.z <= mostLeft || transform.position.z >= mostRight)
             direction *= -1;
@@ -18,13 +18,13 @@ public class PlatformController : MonoBehaviour
         transform.position += Vector3.forward * speed * direction;
     }
 
-    private void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
             other.transform.parent = transform;
     }
 
-    private void OnTriggerExit(Collider other)
+    void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
             other.transform.parent = null;

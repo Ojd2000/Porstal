@@ -8,10 +8,10 @@ public class PortalDisposerController : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            foreach (var v in CrosshairController.portals)
+            foreach (var v in PortalController.portals)
                 Destroy(v.Value);
 
-            CrosshairController.portals.Clear();
+            PortalController.portals.Clear();
         }
     }
 }

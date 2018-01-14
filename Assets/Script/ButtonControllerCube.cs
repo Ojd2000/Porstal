@@ -6,14 +6,6 @@ public class ButtonControllerCube : MonoBehaviour
 {
     public GameObject plane;    // Plane field with cube above
     public GameObject cube;     // Cube to move
-
-    void Start()
-    {
-    }
-
-    void Update()
-    {
-    }
     
     void OnTriggerStay(Collider other)
     {
