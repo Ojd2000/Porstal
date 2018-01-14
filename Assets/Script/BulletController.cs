@@ -29,7 +29,7 @@ public class BulletController : MonoBehaviour
             if (PortalController.portals.ContainsKey(bulletColor))  // No copies of the same portal
                 Destroy(PortalController.portals[bulletColor]);
 
-            var p = Instantiate(portal, transform.position, collision.transform.rotation);
+            var p = Instantiate(portal, transform.position + transform.localScale, collision.transform.rotation);
             p.GetComponent<Renderer>().material.color = bulletColor;
             p.transform.parent = collision.transform;
             PortalController.portals[bulletColor] = p;
