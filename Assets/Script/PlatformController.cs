@@ -12,17 +12,17 @@ public class PlatformController : MonoBehaviour
     
     void FixedUpdate()
     {
-        if (transform.position.z <= mostLeft || transform.position.z >= mostRight)
-            direction *= -1;
+		if (transform.position.z <= mostLeft || transform.position.z >= mostRight)
+			direction *= -1;
 
-        transform.position += Vector3.forward * speed * direction;
+		transform.position += Vector3.forward * speed * direction;
     }
-
-    void OnTriggerEnter(Collider other)
+	
+	void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
             other.transform.parent = transform;
-    }
+	}
 
     void OnTriggerExit(Collider other)
     {

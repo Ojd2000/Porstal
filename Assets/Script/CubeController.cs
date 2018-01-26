@@ -46,9 +46,12 @@ public class CubeController : MonoBehaviour
 
     public void Respawn()
     {
+		Rigidbody rb = GetComponent<Rigidbody> ();
+
         transform.position = spawn;
         transform.parent = null;
-        GetComponent<Rigidbody>().isKinematic = false;
         transform.localScale = fullSize;
+        rb.isKinematic = false;
+		rb.velocity = new Vector3 (0, rb.velocity.y, 0);
     }
 }

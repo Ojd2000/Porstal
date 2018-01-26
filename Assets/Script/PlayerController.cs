@@ -5,118 +5,112 @@ using UnityStandardAssets.Characters.FirstPerson;
 
 public class PlayerController : MonoBehaviour
 {
-    [HideInInspector] public Transform checkpoint;  // Last checkpoint transform
+	[HideInInspector] public Transform checkpoint;  // Last checkpoint transform
 
-    public GameObject bullet;           // Bullet to shoot
-    public Camera cam;                  // Player camera
-    public float gravity;               // Gravity value
-    public int jumpFrames;              // Duration of a jump (frames)
-    public float jumpSpeed;             // Speed of jump
-    public float moveSpeed;             // Speed of normal movements
-    public float sensitivityX = 2f;     // Sensitivity of mouse horizontal movement effect
-    public float sensitivytyY = 2f;     // Sensitivity of mouse vertical movement effect
-    public float bulletSpeed = 50f;
-    
-    // Keywords for key-pressed input
-    string getX;
-    string getY;
-    string getZ;
+	public GameObject bulletPrefab;           // Bullet to shoot
+	public Camera cam;                  // Player camera
+	public float gravity;               // Gravity value
+	public int jumpFrames;              // Duration of a jump (frames)
+	public float jumpSpeed;             // Speed of jump
+	public float moveSpeed;             // Speed of normal movements
+	public float bulletSpeed = 50f;
 
-    // Movement controllers and modifiers
-    CharacterController controller;
-    Vector3 move = Vector3.zero;
-    Vector3 rotate = Vector3.zero;
-    int cont = 0;
+	// Keywords for key-pressed input
+	string getX;
+	string getY;
+	string getZ;
 
-    [SerializeField] MouseLook mouseLook;   // Mouse controller -- combines movements of player and camera
+	// Movement controllers and modifiers
+	CharacterController controller;
+	Vector3 move = Vector3.zero;
+	Vector3 rotate = Vector3.zero;
+	int cont = 0;
 
-    void Start()
-    {
-        controller = GetComponent<CharacterController>();
-        mouseLook.Init(transform, cam.transform);
-        mouseLook.MaximumX = 60;
-        mouseLook.MinimumX = -60;
-        mouseLook.XSensitivity = sensitivityX;
-        mouseLook.YSensitivity = sensitivytyY;
+	[SerializeField] MouseLook mouseLook;   // Mouse controller -- combines movements of player and camera
 
-        getX = "Horizontal-" + name;
-        getY = "Jump-" + name;
-        getZ = "Vertical-" + name;
-    }
+	void Start ()
+	{
+		controller = GetComponent<CharacterController> ();
+		mouseLook.Init (transform, cam.transform);
 
-    // Update position and rotation
-    void FixedUpdate()
-    {
-        controller.Move((transform.forward * move.z + transform.right * move.x + transform.up * move.y) * Time.deltaTime);
-        controller.transform.Rotate(rotate * Time.deltaTime);
+		getX = "Horizontal-" + name;
+		getY = "Jump-" + name;
+		getZ = "Vertical-" + name;
+	}
 
-        if (controller.transform.position.y <= -37)
-            Respawn();
-    }
+	// Update position and rotation
+	void FixedUpdate ()
+	{
+		controller.Move ((transform.forward * move.z + transform.right * move.x + transform.up * move.y) * Time.deltaTime);
+		controller.transform.Rotate (rotate * Time.deltaTime);
 
-    void Update()
-    {
-        //Keyboard input
-        move.x = Input.GetAxis(getX) * moveSpeed;
-        move.z = Input.GetAxis(getZ) * moveSpeed;
+		if (controller.transform.position.y <= -37)
+			Respawn ();
+	}
 
-        CheckForJump();
+	void Update ()
+	{
+		//Keyboard input
+		move.x = Input.GetAxis (getX) * moveSpeed;
+		move.z = Input.GetAxis (getZ) * moveSpeed;
 
-        //Mouse input throw MouseLook
-        mouseLook.LookRotation(transform, cam.transform);
+		CheckForJump ();
 
-        if (Input.GetButton("Fire1"))
-            Fire();
+		//Mouse input throw MouseLook
+		mouseLook.LookRotation (transform, cam.transform);
 
-        if (Input.GetButtonDown("Fire2"))
-            Zoom();
+		if (Input.GetButton ("Fire1"))
+			Fire ();
 
-        if (Input.GetButtonUp("Fire2"))
-            UnZoom();
-    }
+		if (Input.GetButtonDown ("Fire2"))
+			Zoom ();
 
-    void CheckForJump()
-    {
-        if (cont != 0)
-            cont--;
+		if (Input.GetButtonUp ("Fire2"))
+			UnZoom ();
+	}
 
-        else if (controller.isGrounded)
-        {
-            // Check for jump input
-            if (Input.GetButton(getY))
-            {
-                cont = jumpFrames;
-                move.y = jumpSpeed;
-            }
+	void CheckForJump ()
+	{
+		if (cont != 0)
+			cont--;
 
-            else
-                move.y = 0;
-        }
+		else if (controller.isGrounded)
+		{
+			// Check for jump input
+			if (Input.GetButton (getY))
+			{
+				cont = jumpFrames;
+				move.y = jumpSpeed;
+			}
 
-        else
-            move.y = -gravity;
+			else
+				move.y = 0;
+		}
 
-    }
+		else
+			move.y = -gravity;
 
-    void Fire()
-    {
-        GameObject bullet = Instantiate(this.bullet, cam.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2, cam.nearClipPlane + 3)), cam.transform.rotation);
-        bullet.GetComponent<Rigidbody>().velocity = bullet.GetComponent<Rigidbody>().transform.forward * bulletSpeed;
-    }
+	}
 
-    void Zoom()
-    {
-        cam.fieldOfView /= 2;
-    }
+	void Fire ()
+	{
+		GameObject bullet = Instantiate (bulletPrefab, cam.ScreenToWorldPoint (new Vector3 (Screen.width / 2, Screen.height / 2, cam.nearClipPlane + 3)), cam.transform.rotation);
+		bullet.GetComponent<Rigidbody> ().velocity = bullet.GetComponent<Rigidbody> ().transform.forward * bulletSpeed;
+	}
 
-    void UnZoom()
-    {
-        cam.fieldOfView *= 2;
-    }
+	void Zoom ()
+	{
+		cam.fieldOfView /= 2;
+	}
 
-    public void Respawn()
-    {
-        transform.position = checkpoint.position;
-        transform.rotation = checkpoint.rotation;
-    }
+	void UnZoom ()
+	{
+		cam.fieldOfView *= 2;
+	}
+
+	public void Respawn ()
+	{
+		transform.position = checkpoint.position;
+		transform.rotation = checkpoint.rotation;
+	}
 }
