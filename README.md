@@ -6,5 +6,4 @@ Unity 3D project
 --------Instructions--------
 
 1- Create the project in local (if you don't have yet)
-2- Move all files in this repository folders to their respective ones in that project (except Model)
-3- Choose models you want/need and copy them to Asset/ folder and subfolders
+2- Substitute current repository's Assets and ProjectSettings folders to that project's ones
