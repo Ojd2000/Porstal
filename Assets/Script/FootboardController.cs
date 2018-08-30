@@ -4,18 +4,9 @@ using UnityEngine;
 
 public class FootboardController : MonoBehaviour
 {
-    public GameObject door;             // Door to open
-    public GameObject otherFootboard;   // The other footboard
-
     bool triggered = false;
     
-    void Update()
-    {
-        if (triggered && otherFootboard.GetComponent<FootboardController>().Triggered)
-            door.GetComponent<DoorController>().Open();
-    }
-
-    void OnTriggerStay(Collider other)
+    void OnTriggerEnter(Collider other)
     {
         triggered = other.CompareTag("Cube") || other.CompareTag("Player");
     }
@@ -23,7 +14,7 @@ public class FootboardController : MonoBehaviour
     void OnTriggerExit(Collider other)
     {
         triggered = false;
-    }
+	}
 
     public bool Triggered { get { return triggered; } }
 }

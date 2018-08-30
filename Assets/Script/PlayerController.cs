@@ -6,6 +6,7 @@ using UnityStandardAssets.Characters.FirstPerson;
 public class PlayerController : MonoBehaviour
 {
 	[HideInInspector] public Transform checkpoint;  // Last checkpoint transform
+	[HideInInspector] public bool CanMove = true;
 
 	public GameObject bulletPrefab;           // Bullet to shoot
 	public Camera cam;                  // Player camera
@@ -41,8 +42,11 @@ public class PlayerController : MonoBehaviour
 	// Update position and rotation
 	void FixedUpdate ()
 	{
-		controller.Move ((transform.forward * move.z + transform.right * move.x + transform.up * move.y) * Time.deltaTime);
-		controller.transform.Rotate (rotate * Time.deltaTime);
+		if (CanMove)
+		{
+			controller.Move((transform.forward * move.z + transform.right * move.x + transform.up * move.y) * Time.deltaTime);
+			controller.transform.Rotate(rotate * Time.deltaTime); 
+		}
 
 		if (controller.transform.position.y <= -37)
 			Respawn ();
@@ -50,23 +54,26 @@ public class PlayerController : MonoBehaviour
 
 	void Update ()
 	{
-		//Keyboard input
-		move.x = Input.GetAxis (getX) * moveSpeed;
-		move.z = Input.GetAxis (getZ) * moveSpeed;
+		if (CanMove)
+		{
+			//Keyboard input
+			move.x = Input.GetAxis(getX) * moveSpeed;
+			move.z = Input.GetAxis(getZ) * moveSpeed;
 
-		CheckForJump ();
+			CheckForJump();
 
-		//Mouse input throw MouseLook
-		mouseLook.LookRotation (transform, cam.transform);
+			//Mouse input throw MouseLook
+			mouseLook.LookRotation(transform, cam.transform);
 
-		if (Input.GetButton ("Fire1"))
-			Fire ();
+			if (Input.GetButton("Fire1"))
+				Fire();
 
-		if (Input.GetButtonDown ("Fire2"))
-			Zoom ();
+			if (Input.GetButtonDown("Fire2"))
+				Zoom();
 
-		if (Input.GetButtonUp ("Fire2"))
-			UnZoom ();
+			if (Input.GetButtonUp("Fire2"))
+				UnZoom(); 
+		}
 	}
 
 	void CheckForJump ()

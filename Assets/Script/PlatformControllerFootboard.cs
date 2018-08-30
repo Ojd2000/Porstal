@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlatformController : MonoBehaviour
+public class PlatformControllerFootboard : MonoBehaviour
 {
 	public enum MovementDirection
 	{
@@ -14,11 +14,11 @@ public class PlatformController : MonoBehaviour
 	public MovementDirection direction;
 	public float minPosition;
 	public float maxPosition;
-	public float speed;
+	public float speed = .5f;
 
 	Vector3 move = Vector3.zero;
 
-	public void Start()
+	void Start()
 	{
 		move = AssignMovement() * speed;
 	}
